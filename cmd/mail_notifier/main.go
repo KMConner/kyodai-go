@@ -4,7 +4,6 @@ import (
 	"github.com/KMConner/kyodai-go/internal/auth"
 	"github.com/KMConner/kyodai-go/internal/kulasis"
 	"os"
-	"time"
 )
 
 func main() {
@@ -14,12 +13,16 @@ func main() {
 		AccessToken: token,
 		Account:     account,
 	}
-	slot, _ := kulasis.RetrieveTimeSlot(info)
+	slot, err := kulasis.RetrieveTimeSlot(info)
 
-	lec :=slot.GetLecture(kulasis.DayPeriod{
-		Semester: kulasis.First,
-		Day:      time.Monday,
-		Period:   5,
-	})
-	print(lec.LectureName)
+	if err != nil {
+		println(err.Error())
+		return
+	}
+
+	news := slot.GetNewLecture()
+	for _, v := range news {
+		println(v.LectureName)
+	}
+
 }

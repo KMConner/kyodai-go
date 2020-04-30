@@ -67,3 +67,11 @@ func (slot *TimeSlot) GetLecture(dp DayPeriod) *Lecture {
 	}
 	return nil
 }
+
+func (slot *TimeSlot) GetNewLecture() []*Lecture {
+	var ret []*Lecture
+	for _, v := range slot.lectures {
+		ret = append(ret, v)
+	}
+	return ret
+}
