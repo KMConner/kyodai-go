@@ -31,6 +31,7 @@ type Lecture struct {
 	LectureNo      int
 	RoomName       string
 	TeacherName    string
+	info           *auth.Info
 }
 
 type DayPeriod struct {
@@ -56,6 +57,9 @@ func RetrieveTimeSlot(info auth.Info) (*TimeSlot, error) {
 		return nil, err
 	}
 	timeSlot := timeSlotRaw.toTimeSlot()
+	for _, v := range timeSlot.lectures {
+		v.info = &info
+	}
 	return timeSlot, nil
 }
 
