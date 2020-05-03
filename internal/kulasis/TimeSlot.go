@@ -1,6 +1,7 @@
 package kulasis
 
 import (
+	"fmt"
 	"github.com/KMConner/kyodai-go/internal/auth"
 	"github.com/KMConner/kyodai-go/internal/network"
 	"net/url"
@@ -80,4 +81,26 @@ func (slot *TimeSlot) GetNewLecture() []*Lecture {
 		}
 	}
 	return ret
+}
+
+func (lec *Lecture) GetCourseMailTitles() (*[]courseMailTitle, error) {
+	var mails courseMailCollectionRaw
+	mailListUrl, err := url.Parse(fmt.Sprintf(
+		"https://www.k.kyoto-u.ac.jp/api/app/v1/support/course_mail_list?departmentNo=%d&lectureNo=%d",
+		lec.DepartmentNo, lec.LectureNo))
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = network.AccessWithToken(*mailListUrl, lec.info, &mails)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := mails.CourseMails
+	for _, m := range ret {
+		m.info = lec.info
+	}
+	return &ret, nil
 }

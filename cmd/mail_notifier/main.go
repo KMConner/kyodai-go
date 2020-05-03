@@ -23,6 +23,7 @@ func main() {
 	news := slot.GetNewLecture()
 	for _, v := range news {
 		println(v.LectureName)
+		m, _ := v.GetCourseMailTitles()
+		println(len(*m))
 	}
-
 }
