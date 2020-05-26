@@ -2,8 +2,6 @@ package kulasis
 
 import (
 	"fmt"
-	"github.com/KMConner/kyodai-go/internal/auth"
-	"github.com/KMConner/kyodai-go/internal/network"
 	"net/url"
 )
 
@@ -13,7 +11,7 @@ type CourseMailTitle struct {
 	DepartmentNo int    `json:"departmentNo"`
 	IsNew        bool   `json:"isNew"`
 	Title        string `json:"title"`
-	info         *auth.Info
+	info         *Info
 }
 
 func (title *CourseMailTitle) GetContent() (*CourseMail, error) {
@@ -25,7 +23,7 @@ func (title *CourseMailTitle) GetContent() (*CourseMail, error) {
 	}
 
 	mail := CourseMail{}
-	err = network.AccessWithToken(*mailUrl, title.info, &mail)
+	err = accessWithToken(*mailUrl, title.info, &mail)
 	if err != nil {
 		return nil, err
 	}

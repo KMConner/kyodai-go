@@ -1,4 +1,4 @@
-package auth
+package kulasis
 
 import (
 	"bytes"
@@ -12,17 +12,17 @@ import (
 	"strings"
 )
 
-type SessionLocation struct {
+type sessionLocation struct {
 	JSession string
 	Location string
 }
 
-type SamlData struct {
+type samlData struct {
 	RelayState   string
 	SamlResponse string
 }
 
-type CookieLocation struct {
+type cookieLocation struct {
 	Cookie   string
 	Location string
 }
@@ -41,7 +41,7 @@ func getSessionId() (id string, loc string, err error) {
 	if e != nil {
 		return "", "", e
 	}
-	var sessionLoc SessionLocation
+	var sessionLoc sessionLocation
 	e = json.Unmarshal(bodyBytes, &sessionLoc)
 	if e != nil {
 		return "", "", e
@@ -59,8 +59,6 @@ func getLogInPage(cookie []*http.Cookie) error {
 		req.AddCookie(c)
 	}
 
-	req.Header.Add("User-Agent", "KULASIS/1 CFNetwork/1121.2.2 Darwin/19.3.0")
-	req.Header.Add("Accept-Language", "ja-jp")
 	client := http.DefaultClient
 	resp, e := client.Do(req)
 
@@ -72,7 +70,7 @@ func getLogInPage(cookie []*http.Cookie) error {
 	return nil
 }
 
-func postLogin(url string, id string, pass string, sessionId string) (*SamlData, error) {
+func postLogin(url string, id string, pass string, sessionId string) (*samlData, error) {
 	cookie := &http.Cookie{
 		Domain: "authidp1.iimc.kyoto-u.ac.jp",
 		Name:   "JSESSIONID",
@@ -84,7 +82,6 @@ func postLogin(url string, id string, pass string, sessionId string) (*SamlData,
 	if e != nil {
 		return nil, e
 	}
-	req.Header.Add("User-Agent", "KULASIS/1 CFNetwork/1121.2.2 Darwin/19.3.0")
 	req.AddCookie(cookie)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	client := http.DefaultClient
@@ -113,7 +110,7 @@ func arrayToMap(tokens *html.Tokenizer) map[string]string {
 	return ret
 }
 
-func extractSamlData(reader io.Reader) (*SamlData, error) {
+func extractSamlData(reader io.Reader) (*samlData, error) {
 	var state *string = nil
 	var saml *string = nil
 
@@ -155,13 +152,13 @@ func extractSamlData(reader io.Reader) (*SamlData, error) {
 		return nil, errors.New("ERROR OCCURRED WHILE SIGN IN")
 	}
 
-	return &SamlData{
+	return &samlData{
 		RelayState:   *state,
 		SamlResponse: *saml,
 	}, nil
 }
 
-func postSaml(saml *SamlData) (cookie *http.Cookie, location string, err error) {
+func postSaml(saml *samlData) (cookie *http.Cookie, location string, err error) {
 	const samlPostUrl = "https://www.k.kyoto-u.ac.jp/api/app/v1/auth/get_shibboleth_session"
 	data := url.Values{}
 	data.Set("RelayState", saml.RelayState)
@@ -185,7 +182,7 @@ func postSaml(saml *SamlData) (cookie *http.Cookie, location string, err error) 
 		return nil, "", e
 	}
 
-	var cookieLoc CookieLocation
+	var cookieLoc cookieLocation
 	e = json.Unmarshal(bodyBytes, &cookieLoc)
 	if e != nil {
 		return nil, "", e
@@ -211,8 +208,6 @@ func getToken(cookie *http.Cookie) (*Info, error) {
 	}
 	req.AddCookie(cookie)
 	req.AddCookie(&http.Cookie{Name: "cserver", Value: "ku_europa", Domain: "www.k.kyoto-u.ac.jp"})
-	req.Header.Add("Authorization", "undefined")
-	req.Header.Add("Accept-Language", "ja-jp")
 
 	resp, e := http.DefaultClient.Do(req)
 	if e != nil {

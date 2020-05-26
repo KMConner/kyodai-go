@@ -65,8 +65,8 @@ func (lr *lectureRaw) extractPeriod() DayPeriod {
 	}
 }
 
-func (lr *lectureRaw) extractId() LectureId {
-	return LectureId{
+func (lr *lectureRaw) extractId() lectureId {
+	return lectureId{
 		DepartmentNo: lr.DepartmentNo,
 		LectureNo:    lr.LectureNo,
 	}
@@ -85,8 +85,8 @@ func (lr *lectureRaw) toLecture() *Lecture {
 }
 
 func (tsr *timeSlotRaw) toTimeSlot() *TimeSlot {
-	ret1 := make(map[DayPeriod]LectureId)
-	ret2 := make(map[LectureId]*Lecture)
+	ret1 := make(map[DayPeriod]lectureId)
+	ret2 := make(map[lectureId]*Lecture)
 	for _, lec := range tsr.Timetables {
 		lecId := lec.extractId()
 		if _, ok := ret2[lecId]; !ok {

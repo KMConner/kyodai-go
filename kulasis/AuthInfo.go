@@ -1,4 +1,4 @@
-package auth
+package kulasis
 
 type Info struct {
 	AccessToken string

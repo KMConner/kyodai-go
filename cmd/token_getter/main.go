@@ -2,9 +2,10 @@ package main
 
 import (
 	"bufio"
-	"github.com/KMConner/kyodai-go/internal/auth"
+	"github.com/KMConner/kyodai-go/kulasis"
 	"golang.org/x/crypto/ssh/terminal"
 	"os"
+	"syscall"
 )
 
 func main() {
@@ -16,8 +17,8 @@ func main() {
 		return
 	}
 
-	print("Enter Password")
-	bpass, err := terminal.ReadPassword(0)
+	print("Enter Password:")
+	bpass, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		println(err.Error())
 		return
@@ -26,7 +27,7 @@ func main() {
 	pass := string(bpass)
 	println()
 
-	info, err := auth.SignIn(id, pass)
+	info, err := kulasis.SignIn(id, pass)
 	if err != nil {
 		println(err.Error())
 		return

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/KMConner/kyodai-go/internal/kulasis"
+	"github.com/KMConner/kyodai-go/kulasis"
 	"time"
 )
 

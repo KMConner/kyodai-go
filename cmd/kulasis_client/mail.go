@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/KMConner/kyodai-go/internal/kulasis"
+	"github.com/KMConner/kyodai-go/kulasis"
 	"os"
 	"strconv"
 	"strings"
