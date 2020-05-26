@@ -2,8 +2,6 @@ package kulasis
 
 import (
 	"fmt"
-	"github.com/KMConner/kyodai-go/internal/auth"
-	"github.com/KMConner/kyodai-go/internal/network"
 	"net/url"
 	"time"
 )
@@ -32,7 +30,7 @@ type Lecture struct {
 	LectureNo      int
 	RoomName       string
 	TeacherName    string
-	info           *auth.Info
+	info           *Info
 }
 
 type DayPeriod struct {
@@ -46,14 +44,14 @@ type TimeSlot struct {
 	lectures map[LectureId]*Lecture
 }
 
-func RetrieveTimeSlot(info auth.Info) (*TimeSlot, error) {
+func RetrieveTimeSlot(info Info) (*TimeSlot, error) {
 	var timeSlotRaw timeSlotRaw
 	timeslotUrl, err := url.Parse("https://www.k.kyoto-u.ac.jp/api/app/v1/timetable/get_table")
 	if err != nil {
 		return nil, err
 	}
 
-	err = network.AccessWithToken(*timeslotUrl, &info, &timeSlotRaw)
+	err = AccessWithToken(*timeslotUrl, &info, &timeSlotRaw)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +99,7 @@ func (lec *Lecture) GetCourseMailTitles() (*[]CourseMailTitle, error) {
 		return nil, err
 	}
 
-	err = network.AccessWithToken(*mailListUrl, lec.info, &mails)
+	err = AccessWithToken(*mailListUrl, lec.info, &mails)
 	if err != nil {
 		return nil, err
 	}

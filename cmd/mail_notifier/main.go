@@ -1,15 +1,14 @@
 package main
 
 import (
-	"github.com/KMConner/kyodai-go/internal/auth"
-	"github.com/KMConner/kyodai-go/internal/kulasis"
+	"github.com/KMConner/kyodai-go/kulasis"
 	"os"
 )
 
 func main() {
 	account := os.Getenv("KULASIS_ID")
 	token := os.Getenv("KULASIS_TOKEN")
-	info := auth.Info{
+	info := kulasis.Info{
 		AccessToken: token,
 		Account:     account,
 	}

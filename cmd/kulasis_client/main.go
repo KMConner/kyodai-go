@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/KMConner/kyodai-go/internal/auth"
+	"github.com/KMConner/kyodai-go/kulasis"
 	"github.com/jessevdk/go-flags"
 )
 
@@ -10,8 +10,8 @@ type defaultOptions struct {
 	Token     string `short:"t" long:"token" required:"true" env:"ACCESS_TOKEN"`
 }
 
-func (opt *defaultOptions) GetInfo() auth.Info {
-	authInfo := auth.Info{
+func (opt *defaultOptions) GetInfo() kulasis.Info {
+	authInfo := kulasis.Info{
 		AccessToken: opt.Token,
 		Account:     opt.AccountId,
 	}
