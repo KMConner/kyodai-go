@@ -1,14 +1,37 @@
 package main
 
-import "github.com/KMConner/kyodai-go/internal/auth"
+import (
+	"bufio"
+	"github.com/KMConner/kyodai-go/internal/auth"
+	"golang.org/x/crypto/ssh/terminal"
+	"os"
+)
 
 func main() {
-	info, err := auth.SignIn("a0000000", "xxxxxxxxxx")
+	reader := bufio.NewReader(os.Stdin)
+	print("Enter ECS ID:")
+	id, err := reader.ReadString('\n')
 	if err != nil {
 		println(err.Error())
 		return
 	}
 
-	println(info.AccessToken)
-	println(info.Account)
+	print("Enter Password")
+	bpass, err := terminal.ReadPassword(0)
+	if err != nil {
+		println(err.Error())
+		return
+	}
+
+	pass := string(bpass)
+	println()
+
+	info, err := auth.SignIn(id, pass)
+	if err != nil {
+		println(err.Error())
+		return
+	}
+
+	println("AccountNo: " + info.Account)
+	println("Access Token: " + info.AccessToken)
 }
