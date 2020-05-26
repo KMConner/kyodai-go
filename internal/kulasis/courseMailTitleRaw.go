@@ -1,5 +1,5 @@
 package kulasis
 
 type courseMailCollectionRaw struct {
-	CourseMails []courseMailTitle `json:"courseMails"`
+	CourseMails []CourseMailTitle `json:"courseMails"`
 }

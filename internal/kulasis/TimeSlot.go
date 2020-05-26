@@ -73,6 +73,14 @@ func (slot *TimeSlot) GetLecture(dp DayPeriod) *Lecture {
 	return nil
 }
 
+func (slot *TimeSlot) GetAllLectures() []*Lecture {
+	var ret []*Lecture
+	for _, v := range slot.lectures {
+		ret = append(ret, v)
+	}
+	return ret
+}
+
 func (slot *TimeSlot) GetNewLecture() []*Lecture {
 	var ret []*Lecture
 	for _, v := range slot.lectures {
@@ -83,7 +91,7 @@ func (slot *TimeSlot) GetNewLecture() []*Lecture {
 	return ret
 }
 
-func (lec *Lecture) GetCourseMailTitles() (*[]courseMailTitle, error) {
+func (lec *Lecture) GetCourseMailTitles() (*[]CourseMailTitle, error) {
 	var mails courseMailCollectionRaw
 	mailListUrl, err := url.Parse(fmt.Sprintf(
 		"https://www.k.kyoto-u.ac.jp/api/app/v1/support/course_mail_list?departmentNo=%d&lectureNo=%d",
@@ -98,9 +106,10 @@ func (lec *Lecture) GetCourseMailTitles() (*[]courseMailTitle, error) {
 		return nil, err
 	}
 
-	ret := mails.CourseMails
-	for _, m := range ret {
+	ret := make([]CourseMailTitle, 0)
+	for _, m := range mails.CourseMails {
 		m.info = lec.info
+		ret = append(ret, m)
 	}
 	return &ret, nil
 }
