@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"github.com/KMConner/kyodai-go/internal"
 	"github.com/KMConner/kyodai-go/kulasis"
 	"golang.org/x/crypto/ssh/terminal"
 	"os"
@@ -9,6 +10,7 @@ import (
 )
 
 func main() {
+	printToConsole := len(os.Args) == 1 && os.Args[0] == "-o"
 	reader := bufio.NewReader(os.Stdin)
 	print("Enter ECS ID:")
 	id, err := reader.ReadString('\n')
@@ -33,6 +35,13 @@ func main() {
 		return
 	}
 
-	println("AccountNo: " + info.Account)
-	println("Access Token: " + info.AccessToken)
+	if printToConsole {
+		println("AccountNo: " + info.Account)
+		println("Access Token: " + info.AccessToken)
+	} else {
+		err = internal.Store(*info)
+		if err != nil {
+			println(err.Error())
+		}
+	}
 }
