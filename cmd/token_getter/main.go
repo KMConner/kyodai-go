@@ -17,7 +17,7 @@ func main() {
 		return
 	}
 
-	print("Enter Password")
+	print("Enter Password:")
 	bpass, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		println(err.Error())
