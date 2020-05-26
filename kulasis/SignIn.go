@@ -59,8 +59,6 @@ func getLogInPage(cookie []*http.Cookie) error {
 		req.AddCookie(c)
 	}
 
-	req.Header.Add("User-Agent", "KULASIS/1 CFNetwork/1121.2.2 Darwin/19.3.0")
-	req.Header.Add("Accept-Language", "ja-jp")
 	client := http.DefaultClient
 	resp, e := client.Do(req)
 
@@ -84,7 +82,6 @@ func postLogin(url string, id string, pass string, sessionId string) (*SamlData,
 	if e != nil {
 		return nil, e
 	}
-	req.Header.Add("User-Agent", "KULASIS/1 CFNetwork/1121.2.2 Darwin/19.3.0")
 	req.AddCookie(cookie)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	client := http.DefaultClient
@@ -211,8 +208,6 @@ func getToken(cookie *http.Cookie) (*Info, error) {
 	}
 	req.AddCookie(cookie)
 	req.AddCookie(&http.Cookie{Name: "cserver", Value: "ku_europa", Domain: "www.k.kyoto-u.ac.jp"})
-	req.Header.Add("Authorization", "undefined")
-	req.Header.Add("Accept-Language", "ja-jp")
 
 	resp, e := http.DefaultClient.Do(req)
 	if e != nil {
