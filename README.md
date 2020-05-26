@@ -36,4 +36,8 @@ KULASIS にアクセスするためアプリケーション・ライブラリ
 go run cmd/token_getter/main.go 
 ```
 
+## その他
 
+- バグ報告、改善提案、大歓迎です。プルリクももちろん大歓迎。 (英語、日本語どちらでも)
+
+- 実装元のドキュメントは gist に貼っときます。 <https://gist.github.com/KMConner/6589886d4ae19d223f455b7a4ab76dbe>
