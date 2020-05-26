@@ -1,6 +1,7 @@
 package kulasis
 
 import (
+	"fmt"
 	"github.com/KMConner/kyodai-go/internal/auth"
 	"github.com/KMConner/kyodai-go/internal/network"
 	"net/url"
@@ -31,6 +32,7 @@ type Lecture struct {
 	LectureNo      int
 	RoomName       string
 	TeacherName    string
+	info           *auth.Info
 }
 
 type DayPeriod struct {
@@ -56,6 +58,9 @@ func RetrieveTimeSlot(info auth.Info) (*TimeSlot, error) {
 		return nil, err
 	}
 	timeSlot := timeSlotRaw.toTimeSlot()
+	for _, v := range timeSlot.lectures {
+		v.info = &info
+	}
 	return timeSlot, nil
 }
 
@@ -68,10 +73,43 @@ func (slot *TimeSlot) GetLecture(dp DayPeriod) *Lecture {
 	return nil
 }
 
-func (slot *TimeSlot) GetNewLecture() []*Lecture {
+func (slot *TimeSlot) GetAllLectures() []*Lecture {
 	var ret []*Lecture
 	for _, v := range slot.lectures {
 		ret = append(ret, v)
 	}
 	return ret
+}
+
+func (slot *TimeSlot) GetNewLecture() []*Lecture {
+	var ret []*Lecture
+	for _, v := range slot.lectures {
+		if v.IsNew {
+			ret = append(ret, v)
+		}
+	}
+	return ret
+}
+
+func (lec *Lecture) GetCourseMailTitles() (*[]CourseMailTitle, error) {
+	var mails courseMailCollectionRaw
+	mailListUrl, err := url.Parse(fmt.Sprintf(
+		"https://www.k.kyoto-u.ac.jp/api/app/v1/support/course_mail_list?departmentNo=%d&lectureNo=%d",
+		lec.DepartmentNo, lec.LectureNo))
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = network.AccessWithToken(*mailListUrl, lec.info, &mails)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := make([]CourseMailTitle, 0)
+	for _, m := range mails.CourseMails {
+		m.info = lec.info
+		ret = append(ret, m)
+	}
+	return &ret, nil
 }
