@@ -5,6 +5,7 @@ import (
 	"github.com/KMConner/kyodai-go/kulasis"
 	"golang.org/x/crypto/ssh/terminal"
 	"os"
+	"syscall"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	}
 
 	print("Enter Password")
-	bpass, err := terminal.ReadPassword(0)
+	bpass, err := terminal.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		println(err.Error())
 		return
