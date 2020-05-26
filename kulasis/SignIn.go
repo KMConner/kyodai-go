@@ -12,17 +12,17 @@ import (
 	"strings"
 )
 
-type SessionLocation struct {
+type sessionLocation struct {
 	JSession string
 	Location string
 }
 
-type SamlData struct {
+type samlData struct {
 	RelayState   string
 	SamlResponse string
 }
 
-type CookieLocation struct {
+type cookieLocation struct {
 	Cookie   string
 	Location string
 }
@@ -41,7 +41,7 @@ func getSessionId() (id string, loc string, err error) {
 	if e != nil {
 		return "", "", e
 	}
-	var sessionLoc SessionLocation
+	var sessionLoc sessionLocation
 	e = json.Unmarshal(bodyBytes, &sessionLoc)
 	if e != nil {
 		return "", "", e
@@ -70,7 +70,7 @@ func getLogInPage(cookie []*http.Cookie) error {
 	return nil
 }
 
-func postLogin(url string, id string, pass string, sessionId string) (*SamlData, error) {
+func postLogin(url string, id string, pass string, sessionId string) (*samlData, error) {
 	cookie := &http.Cookie{
 		Domain: "authidp1.iimc.kyoto-u.ac.jp",
 		Name:   "JSESSIONID",
@@ -110,7 +110,7 @@ func arrayToMap(tokens *html.Tokenizer) map[string]string {
 	return ret
 }
 
-func extractSamlData(reader io.Reader) (*SamlData, error) {
+func extractSamlData(reader io.Reader) (*samlData, error) {
 	var state *string = nil
 	var saml *string = nil
 
@@ -152,13 +152,13 @@ func extractSamlData(reader io.Reader) (*SamlData, error) {
 		return nil, errors.New("ERROR OCCURRED WHILE SIGN IN")
 	}
 
-	return &SamlData{
+	return &samlData{
 		RelayState:   *state,
 		SamlResponse: *saml,
 	}, nil
 }
 
-func postSaml(saml *SamlData) (cookie *http.Cookie, location string, err error) {
+func postSaml(saml *samlData) (cookie *http.Cookie, location string, err error) {
 	const samlPostUrl = "https://www.k.kyoto-u.ac.jp/api/app/v1/auth/get_shibboleth_session"
 	data := url.Values{}
 	data.Set("RelayState", saml.RelayState)
@@ -182,7 +182,7 @@ func postSaml(saml *SamlData) (cookie *http.Cookie, location string, err error) 
 		return nil, "", e
 	}
 
-	var cookieLoc CookieLocation
+	var cookieLoc cookieLocation
 	e = json.Unmarshal(bodyBytes, &cookieLoc)
 	if e != nil {
 		return nil, "", e

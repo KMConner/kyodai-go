@@ -17,7 +17,7 @@ const (
 	FullYearIntensive
 )
 
-type LectureId struct {
+type lectureId struct {
 	DepartmentNo int
 	LectureNo    int
 }
@@ -40,8 +40,8 @@ type DayPeriod struct {
 }
 
 type TimeSlot struct {
-	times    map[DayPeriod]LectureId
-	lectures map[LectureId]*Lecture
+	times    map[DayPeriod]lectureId
+	lectures map[lectureId]*Lecture
 }
 
 func RetrieveTimeSlot(info Info) (*TimeSlot, error) {
@@ -51,7 +51,7 @@ func RetrieveTimeSlot(info Info) (*TimeSlot, error) {
 		return nil, err
 	}
 
-	err = AccessWithToken(*timeslotUrl, &info, &timeSlotRaw)
+	err = accessWithToken(*timeslotUrl, &info, &timeSlotRaw)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (lec *Lecture) GetCourseMailTitles() (*[]CourseMailTitle, error) {
 		return nil, err
 	}
 
-	err = AccessWithToken(*mailListUrl, lec.info, &mails)
+	err = accessWithToken(*mailListUrl, lec.info, &mails)
 	if err != nil {
 		return nil, err
 	}

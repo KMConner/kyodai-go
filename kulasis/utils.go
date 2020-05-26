@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-func AccessWithToken(accessUrl url.URL, credential *Info, data interface{}) error {
+func accessWithToken(accessUrl url.URL, credential *Info, data interface{}) error {
 	query := accessUrl.Query()
 	query.Add("accessToken", credential.AccessToken)
 	query.Add("account", credential.Account)

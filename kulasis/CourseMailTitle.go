@@ -23,7 +23,7 @@ func (title *CourseMailTitle) GetContent() (*CourseMail, error) {
 	}
 
 	mail := CourseMail{}
-	err = AccessWithToken(*mailUrl, title.info, &mail)
+	err = accessWithToken(*mailUrl, title.info, &mail)
 	if err != nil {
 		return nil, err
 	}
