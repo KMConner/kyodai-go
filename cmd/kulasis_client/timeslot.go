@@ -12,8 +12,11 @@ type timeslotOptions struct {
 }
 
 func (opt *timeslotOptions) Execute(_ []string) error {
-	authInfo := opt.GetInfo()
-	timeSlot, err := kulasis.RetrieveTimeSlot(authInfo)
+	err := opt.loadCredential()
+	if err != nil {
+		return err
+	}
+	timeSlot, err := kulasis.RetrieveTimeSlot(*opt.authInfo)
 	if err != nil {
 		return err
 	}
