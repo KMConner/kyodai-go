@@ -35,7 +35,7 @@ func (opt *getMailOptions) Execute(_ []string) error {
 	for i, l := range lectures {
 		fmt.Printf("%d: %s\n", i+1, l.LectureName)
 	}
-	println("Select lectures to read course mail.")
+	fmt.Println("Select lectures to read course mail.")
 
 	reader := bufio.NewReader(os.Stdin)
 	numStr, err := reader.ReadString('\n')
