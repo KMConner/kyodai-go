@@ -1,5 +1,5 @@
 builds:
-  - main: cmd/kulasis_client/
+  - main: ./cmd/kulasis_client/
     binary: kulasis_client
     goos:
       - windows
