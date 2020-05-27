@@ -13,7 +13,7 @@ const (
 
 func openStore() (keyring.Keyring, error) {
 	ring, err := keyring.Open(keyring.Config{
-		AllowedBackends: []keyring.BackendType{keyring.WinCredBackend},
+		AllowedBackends: []keyring.BackendType{keyring.WinCredBackend, keyring.KeychainBackend},
 		ServiceName:     appName,
 	})
 
