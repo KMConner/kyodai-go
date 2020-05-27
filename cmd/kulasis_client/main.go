@@ -25,6 +25,7 @@ func main() {
 	parser := flags.NewParser(&defaults, flags.Default)
 	timeslot := timeslotOptions{}
 	mail := getMailOptions{}
+	login := loginOptions{}
 	_, e := parser.AddCommand("timeslot", "Show timeslot",
 		"Print time slot to console", &timeslot)
 	if e != nil {
@@ -34,6 +35,13 @@ func main() {
 
 	_, e = parser.AddCommand("mail", "Get mails",
 		"Get mail", &mail)
+	if e != nil {
+		println(e.Error())
+		return
+	}
+
+	_, e = parser.AddCommand("login", "Login",
+		"Login to KULASIS", &login)
 	if e != nil {
 		println(e.Error())
 		return
