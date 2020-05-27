@@ -1,0 +1,12 @@
+builds:
+  - main: cmd/kulasis_client/
+    binary: kulasis_client
+    goos:
+      - windows
+      - darwin
+    goarch:
+      - amd64
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
