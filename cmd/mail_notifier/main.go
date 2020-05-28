@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/KMConner/kyodai-go/kulasis"
 	"os"
 )
@@ -21,8 +22,8 @@ func main() {
 
 	news := slot.GetNewLecture()
 	for _, v := range news {
-		println(v.LectureName)
+		fmt.Println(v.LectureName)
 		m, _ := v.GetCourseMailTitles()
-		println(len(*m))
+		fmt.Println(len(*m))
 	}
 }

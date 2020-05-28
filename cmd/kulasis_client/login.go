@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/KMConner/kyodai-go/internal"
 	"github.com/KMConner/kyodai-go/kulasis"
 	"golang.org/x/crypto/ssh/terminal"
@@ -29,7 +30,7 @@ func (opts *loginOptions) Execute(_ []string) error {
 	}
 
 	pass := string(bpass)
-	println()
+	fmt.Println()
 
 	info, err := kulasis.SignIn(id, pass)
 	if err != nil {
@@ -37,8 +38,8 @@ func (opts *loginOptions) Execute(_ []string) error {
 	}
 
 	if opts.PrintToConsole {
-		println("AccountNo: " + info.Account)
-		println("Access Token: " + info.AccessToken)
+		fmt.Println("AccountNo: " + info.Account)
+		fmt.Println("Access Token: " + info.AccessToken)
 	} else {
 		err = internal.Store(*info)
 		return err
