@@ -1,6 +1,6 @@
 builds:
-  - main: ./cmd/kulasis_client/
-    binary: kulasis_client
+  - main: ./cmd/kyodai_go/
+    binary: kyodai_go
     goos:
       - windows
       - darwin
