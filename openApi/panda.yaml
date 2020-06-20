@@ -1,0 +1,92 @@
+openapi: "3.0.0"
+info:
+  description: ""
+  version: "0.1.0"
+  title: "PandA"
+  termsOfService: "http://swagger.io/terms/"
+servers:
+  - url: "https://panda.ecs.kyoto-u.ac.jp/direct"
+    description: "PandA server"
+tags:
+  - name: "Site"
+    externalDocs:
+      description: "Find out more"
+      url: "https://panda.ecs.kyoto-u.ac.jp/direct/site/describe"
+  - name: "Resources"
+paths:
+  /site.json:
+    get:
+      tags:
+        - "Site"
+      operationId: GetSites
+      summary: "Get the list of sites."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SiteCollection"
+      security:
+        - cookie: []
+  /content/site/{site_id}.json:
+    get:
+      tags:
+        - Resources
+      operationId: GetResources
+      parameters:
+        - name: site_id
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ResourceCollection"
+      security:
+        - cookie: []
+
+components:
+  schemas:
+    SiteCollection:
+      type: object
+      properties:
+        site_collection:
+          type: array
+          items:
+            $ref: "#/components/schemas/Site"
+    Site:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    ResourceCollection:
+      type: array
+      items:
+        $ref: "#/components/schemas/Resource"
+    Resource:
+      type: object
+      properties:
+        title:
+          type: string
+        modifiedDate:
+          type: string
+        url:
+          type: string
+          format: url
+        size:
+          type: string
+          format: int32
+        container:
+          type: string
+  securitySchemes:
+    cookie:
+      type: apiKey
+      name: JSESSIONID
+      in: cookie
